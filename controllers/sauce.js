@@ -1,6 +1,7 @@
-const Thing = require('../models/Sauces');
+const Sauces = require('../models/Sauces');
 const fs = require('fs');
 
+/*
 exports.createThing = (req, res, next) => {
   const thingObject = JSON.parse(req.body.thing);
   delete thingObject._id;
@@ -62,11 +63,11 @@ exports.deleteThing = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
-
-exports.getAllStuff = (req, res, next) => {
-  Thing.find().then(
-    (things) => {
-      res.status(200).json(things);
+*/
+exports.getAll = (req, res, next) => {
+  Sauces.find().then(
+    (sauces) => {
+      res.status(200).json(sauces);
     }
   ).catch(
     (error) => {
