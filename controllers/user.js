@@ -1,7 +1,10 @@
+// Package permettant de crypter nos mots de passe et de générer un hash que l'on pourra stocker
 const bcrypt = require('bcrypt');
+// Package générant un token d'authentification pour sécuriser les connexions 
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// Route pour la création d'un compte utilisateur
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -16,6 +19,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+// Route pour la connexion utilisateur
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
     .then(user => {

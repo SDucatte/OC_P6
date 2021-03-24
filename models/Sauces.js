@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Paramètrage schéma de données attendu pour l'objet Sauce
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: false },
   name: { type: String, required: true },

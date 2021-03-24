@@ -1,11 +1,14 @@
+// Package gérant l'upload de fichiers 
 const multer = require('multer');
 
+// Format de fichier accepté
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png'
 };
 
+// Indique où stocker l'image uploadée et comment la renommer pour éviter des erreurs côté serveur
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images');
