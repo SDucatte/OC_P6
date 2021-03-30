@@ -20,6 +20,8 @@ exports.signup = (req, res, next) => {
 };
 
 // Route pour la connexion utilisateur
+
+// Ne pas récupérer l'email, utiliser mongo mask
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
     .then(user => {
@@ -32,9 +34,10 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
           res.status(200).json({
+            userId: user._id,
             token: jwt.sign(
               { userId: user._id },
-              'RANDOM_TOKEN_SECRET',
+              '3d2a5a16c34e1c1329b27c9512cd8f54',
               { expiresIn: '24h' }
             )
           });

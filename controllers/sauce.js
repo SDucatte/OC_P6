@@ -2,10 +2,9 @@ const Sauce = require('../models/Sauces');
 // Package permmettant de gérer les fichiers envoyé par l'utilisateur
 const fs = require('fs');
 
-// Route pour la création d'une sauce
+// Action pour la création d'une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  console.log(sauceObject);
   delete sauceObject._id;
   const sauce = new Sauce({
     ...sauceObject,
@@ -28,7 +27,7 @@ exports.createSauce = (req, res, next) => {
   );
 };
 
-// Route pour aller sur une sauce 
+// Action pour aller sur une sauce 
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
     _id: req.params.id
@@ -45,7 +44,7 @@ exports.getOneSauce = (req, res, next) => {
   );
 };
 
-// Route pour modifier une sauce que l'on a ajouté
+// Action pour modifier une sauce que l'on a ajouté
 exports.modifySauce = (req, res, next) => {
   const thingObject = req.file ?
     {
@@ -57,7 +56,7 @@ exports.modifySauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-// Route pour supprimer une sauce
+// Action pour supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(thing => {
@@ -71,7 +70,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Route pour afficher toutes les sauces présente sur l'application 
+// Action pour afficher toutes les sauces présente sur l'application 
 exports.getAll = (req, res, next) => {
   Sauce.find().then(
     (sauces) => {
@@ -86,7 +85,7 @@ exports.getAll = (req, res, next) => {
   );
 };
 
-// Route pour liker ou disliker une sauce 
+// Action pour liker ou disliker une sauce 
 exports.likedSauce = (req, res, next) => {
   Sauce.findOne(
     { _id: req.params.id }
@@ -94,24 +93,30 @@ exports.likedSauce = (req, res, next) => {
     if (req.body.like == 1) {
       sauce.likes++;
       sauce.usersLiked.push(req.body.userId);
-      console.log(req.body.userId);
+
     } else if (req.body.like == -1) {
       sauce.dislikes++;
       sauce.usersDisliked.push(req.body.userId);
+
     } else if (req.body.like == 0) {
       if (sauce.usersLiked.some(userId => userId == req.body.userId)) {
         sauce.likes--;
         sauce.usersLiked = sauce.usersLiked.filter(userId => userId != req.body.userId);
+
       } else {
         sauce.dislikes--;
         sauce.usersDisliked = sauce.usersDisliked.filter(userId => userId != req.body.userId);
       }
+
     } else {
       res.status(400).json({ message: 'Erreur dans la requête' })
     }
+
     sauce.save().then(() => {
       res.status(200).json({ message: 'Like ajouté !' })
     })
+
+
   }).catch((error) => {
     res.status(400).json({
       error: error
