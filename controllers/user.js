@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Route pour la création d'un compte utilisateur
+// Action pour la création d'un compte utilisateur
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -19,9 +19,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Route pour la connexion utilisateur
-
-// Ne pas récupérer l'email, utiliser mongo mask
+// Action pour la connexion utilisateur
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
     .then(user => {
